@@ -17,56 +17,112 @@
         super: super {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LCTRL &kp RIGHT_ALT &kp LEFT_BRACKET>;
+            bindings =
+                <&macro_press>,
+                <&kp LCTRL &kp RIGHT_ALT>,
+                <&macro_tap>,
+                <&kp LEFT_BRACKET>,
+                <&macro_release>,
+                <&kp LCTRL &kp RIGHT_ALT>;
+
             label = "SUPER";
         };
 
         ssaver: ss {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LCTRL &kp RIGHT_ALT &kp S>;
+            bindings =
+                <&macro_press>,
+                <&kp LCTRL &kp RIGHT_ALT>,
+                <&macro_tap>,
+                <&kp S>,
+                <&macro_release>,
+                <&kp LCTRL &kp RIGHT_ALT>;
+
             label = "SS";
         };
 
         sshot: sshot {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LEFT_WIN &kp LEFT_SHIFT &kp S>;
+            bindings =
+                <&macro_press>,
+                <&kp LEFT_WIN &kp LEFT_SHIFT>,
+                <&macro_tap>,
+                <&kp S>,
+                <&macro_release>,
+                <&kp LEFT_WIN &kp LEFT_SHIFT>;
+
             label = "SSHOT";
         };
 
         workspace1: workspace1 {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp RIGHT_ALT &kp NUMBER_1>;
+            bindings =
+                <&macro_press>,
+                <&kp RIGHT_ALT>,
+                <&macro_tap>,
+                <&kp NUMBER_1>,
+                <&macro_release>,
+                <&kp RIGHT_ALT>;
+
             label = "WORKSPACE1";
         };
 
         workspace2: workspace2 {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp RIGHT_ALT &kp NUMBER_2>;
+            bindings =
+                <&macro_press>,
+                <&kp RIGHT_ALT>,
+                <&macro_tap>,
+                <&kp NUMBER_2>,
+                <&macro_release>,
+                <&kp RIGHT_ALT>;
+
             label = "WORKSPACE2";
         };
 
         workspace3: workspace3 {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp RIGHT_ALT &kp NUMBER_3>;
+            bindings =
+                <&macro_press>,
+                <&kp RIGHT_ALT>,
+                <&macro_tap>,
+                <&kp NUMBER_3>,
+                <&macro_release>,
+                <&kp RIGHT_ALT>;
+
             label = "WORKSPACE3";
         };
 
         windowfocus: windowfocus {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp RIGHT_ALT &kp T>;
+            bindings =
+                <&macro_press>,
+                <&kp RIGHT_ALT>,
+                <&macro_tap>,
+                <&kp T>,
+                <&macro_release>,
+                <&kp RIGHT_ALT>;
+
             label = "WINDOWFOCUS";
         };
 
         WinR: WinR {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LEFT_WIN &kp R>;
+            bindings =
+                <&macro_press>,
+                <&kp LEFT_WIN>,
+                <&macro_tap>,
+                <&kp R>,
+                <&macro_release>,
+                <&kp LEFT_WIN>;
+
             label = "WINR";
         };
     };
