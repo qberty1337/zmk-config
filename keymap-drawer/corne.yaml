@@ -13,7 +13,7 @@ layers:
   - O
   - P
   - $$mdi:backspace-outline$$
-  - $$mdi:apple-keyboard-control$$
+  - LEFT SHIFT
   - A
   - S
   - D
@@ -25,7 +25,7 @@ layers:
   - L
   - ;
   - ''''
-  - $$mdi:apple-keyboard-shift$$
+  - $$mdi:apple-keyboard-control$$
   - Z
   - X
   - C
@@ -39,7 +39,7 @@ layers:
   - {t: ENTER, h: RIGHT SHIFT}
   - '&super'
   - LOW
-  - ␣
+  - {t: ␣, h: BT}
   - ␣
   - RAI
   - $$mdi:apple-keyboard-option$$
@@ -172,3 +172,46 @@ layers:
   - {t: ▽, type: trans}
   - {type: held}
   - RIGHT ALT
+  BT:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - W
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - A
+  - S
+  - D
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - BT CLR
+  - BT 1
+  - BT 2
+  - BT 3
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
