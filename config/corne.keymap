@@ -125,6 +125,20 @@
 
             label = "WINR";
         };
+
+        HASS: HASS {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press>,
+                <&kp LCTRL &kp LEFT_ALT>,
+                <&macro_tap>,
+                <&kp X>,
+                <&macro_release>,
+                <&kp LCTRL &kp LEFT_ALT>;
+
+            label = "HASS";
+        };
     };
 
     keymap {
@@ -158,7 +172,7 @@
 
             bindings = <
 &kp GRAVE   &kp EXCLAMATION  &kp AT       &kp HASH          &kp DOLLAR         &kp PERCENT     &kp CARET   &kp AMPERSAND         &kp ASTERISK           &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp BSPC
-&kp DELETE  &sshot           &ssaver      &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &trans          &kp INSERT  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp MINUS             &kp UP_ARROW           &kp BACKSLASH
+&kp DELETE  &sshot           &ssaver      &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &HASS           &kp INSERT  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp MINUS             &kp UP_ARROW           &kp BACKSLASH
 &kp LSHFT   &workspace1      &workspace2  &workspace3       &windowfocus       &kp LEFT_ALT    &kp MINUS   &kp EQUAL             &trans                 &kp LEFT_ARROW        &kp DOWN_ARROW         &kp RIGHT_ARROW
                                           &kp LGUI          &trans             &kp SPACE       &kp SPACE   &mo 3                 &kp NUMBER_0
             >;

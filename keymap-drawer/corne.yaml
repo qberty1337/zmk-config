@@ -61,7 +61,7 @@ layers:
   - '&ssaver'
   - '['
   - ']'
-  - {t: ▽, type: trans}
+  - '&HASS'
   - INSERT
   - (
   - )
