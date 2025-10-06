@@ -400,9 +400,7 @@ rect.held, rect.combo.held {
 <g transform="translate(489, 224) rotate(-30.0)" class="key keypos-39">
 <rect rx="6" ry="6" x="-26" y="-40" width="52" height="80" class="key"/>
 <text x="0" y="0" class="key tap">␣</text>
-<a href="#ALT">
-<text x="0" y="38" class="key hold layer-activator">ALT</text>
-</a></g>
+</g>
 <g transform="translate(554, 213) rotate(-15.0)" class="key keypos-40">
 <rect rx="6" ry="6" x="-26" y="-26" width="52" height="52" class="key"/>
 <a href="#RAI">
@@ -1146,8 +1144,8 @@ rect.held, rect.combo.held {
 </g>
 </g>
 </g>
-<g transform="translate(40, 1653)" class="layer-ALT">
-<text x="0" y="28" class="label" id="ALT">ALT:</text>
+<g transform="translate(40, 1653)" class="layer-MVE">
+<text x="0" y="28" class="label" id="MVE">MVE:</text>
 <g transform="translate(0, 56)">
 <g transform="translate(28, 49)" class="key trans keypos-0">
 <rect rx="6" ry="6" x="-26" y="-26" width="52" height="52" class="key trans"/>
@@ -1313,8 +1311,9 @@ rect.held, rect.combo.held {
 <rect rx="6" ry="6" x="-26" y="-40" width="52" height="80" class="key trans"/>
 <text x="0" y="0" class="key trans tap">▽</text>
 </g>
-<g transform="translate(489, 224) rotate(-30.0)" class="key held keypos-39">
-<rect rx="6" ry="6" x="-26" y="-40" width="52" height="80" class="key held"/>
+<g transform="translate(489, 224) rotate(-30.0)" class="key trans keypos-39">
+<rect rx="6" ry="6" x="-26" y="-40" width="52" height="80" class="key trans"/>
+<text x="0" y="0" class="key trans tap">▽</text>
 </g>
 <g transform="translate(554, 213) rotate(-15.0)" class="key trans keypos-40">
 <rect rx="6" ry="6" x="-26" y="-26" width="52" height="52" class="key trans"/>

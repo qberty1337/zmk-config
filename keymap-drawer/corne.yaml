@@ -40,7 +40,7 @@ layers:
   - '&super'
   - LOW
   - {t: ␣, h: BT}
-  - {t: ␣, h: ALT}
+  - ␣
   - RAI
   - $$mdi:apple-keyboard-option$$
   LOW:
@@ -215,7 +215,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  ALT:
+  MVE:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -255,6 +255,6 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
