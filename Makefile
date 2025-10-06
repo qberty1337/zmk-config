@@ -39,7 +39,7 @@ config=${PWD}/config
 nice_mount=/Volumes/NICENANO
 puchi_mount=/Volumes/NRF52BOOT
 xiao_mount=/Volumes/XIAO-SENSE
-zmk_image=zmkfirmware/zmk-dev-arm:3.5
+zmk_image=zmkfirmware/zmk-dev-arm:stable
 nice=nice_nano_v2
 puchi=puchi_ble_v1
 xiao=seeeduino_xiao_ble
@@ -57,7 +57,7 @@ docker_opts= \
 	${zmk_image}
 
 ### name
-keyboard_name_nice= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Corne_View"'
+keyboard_name_nice= '-DCONFIG_ZMK_KEYBOARD_NAME="CorneBT"'
 keyboard_name_nice_oled= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Corne_Oled"'
 keyboard_name_nice_dongle= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Dongle"'
 keyboard_name_nice_dongle_oled= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Dongle_O"'
