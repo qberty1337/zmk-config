@@ -1,6 +1,6 @@
 // Configuration for Corne v3/v3.6 with native 5-pin nice_view display support
 // This board has the display header built-in, no adapter needed
-// Testing with P0.18 MOSI (correct), trying CS=P0.17 instead of P0.06
+// FINAL: SCK=P0.20, MOSI=P0.18, CS=P0.06 (standard nice_view pinout)
 
 &pinctrl {
     spi3_default: spi3_default {
@@ -29,7 +29,7 @@ nice_view_spi: &spi3 {
     pinctrl-1 = <&spi3_sleep>;
     pinctrl-names = "default", "sleep";
     
-    cs-gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+    cs-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
 };
 
 // If you want RGB LEDs instead of nice_view, comment out the above
