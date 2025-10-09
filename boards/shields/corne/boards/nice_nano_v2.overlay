@@ -1,21 +1,21 @@
 // Configuration for Corne v3/v3.6 with native 5-pin nice_view display support
 // This board has the display header built-in, no adapter needed
-// TEST CONFIG 8 (LAST COMBO): SCK=P0.17 (D3), MOSI=P0.20 (D2), CS=P0.06 (D1)
+// CORRECT CONFIG (from nice_view defaults): SCK=P0.20, MOSI=P0.18, CS=P0.06
 
 &pinctrl {
     spi3_default: spi3_default {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 17)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 20)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 20)>; // MISO not used but required
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 18)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 18)>; // MISO not used but required
         };
     };
 
     spi3_sleep: spi3_sleep {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 17)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 20)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 20)>;
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 18)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 18)>;
             low-power-enable;
         };
     };
