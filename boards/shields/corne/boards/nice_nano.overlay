@@ -29,7 +29,7 @@ nice_view_spi: &spi3 {
     pinctrl-1 = <&spi3_sleep>;
     pinctrl-names = "default", "sleep";
     
-    cs-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
 };
 
 // Disable OLED and I2C when using nice_view
