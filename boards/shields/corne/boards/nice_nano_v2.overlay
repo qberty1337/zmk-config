@@ -1,21 +1,22 @@
 // Configuration for Corne v3/v3.6 with native 5-pin nice_view display support
 // This board has the display header built-in, no adapter needed
-// TEST CONFIG 4: SCK=P0.20 (D2), MOSI=P0.06 (D1), CS=P0.17 (D3) - swapped MOSI/CS from Config1
+// TEST CONFIG 6: Swapped SCK and MOSI from Config 4
+// SCK=P0.06 (D1), MOSI=P0.20 (D2), CS=P0.17 (D3)
 
 &pinctrl {
     spi3_default: spi3_default {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 6)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 6)>; // MISO not used but required
+            psels = <NRF_PSEL(SPIM_SCK, 0, 6)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 20)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 20)>; // MISO not used but required
         };
     };
 
     spi3_sleep: spi3_sleep {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 6)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 6)>;
+            psels = <NRF_PSEL(SPIM_SCK, 0, 6)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 20)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 20)>;
             low-power-enable;
         };
     };
@@ -29,7 +30,7 @@ nice_view_spi: &spi3 {
     pinctrl-1 = <&spi3_sleep>;
     pinctrl-names = "default", "sleep";
     
-    cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
 };
 
 // If you want RGB LEDs instead of nice_view, comment out the above
