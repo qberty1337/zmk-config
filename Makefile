@@ -59,7 +59,7 @@ docker_opts= \
 ### name
 keyboard_name_nice= '-DCONFIG_ZMK_KEYBOARD_NAME="CorneBT"'
 keyboard_name_nice_oled= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Corne_Oled"'
-keyboard_name_nice_dongle= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Dongle"'
+keyboard_name_nice_dongle= '-DCONFIG_ZMK_KEYBOARD_NAME="CorneDongle"'
 keyboard_name_nice_dongle_oled= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Dongle_O"'
 keyboard_name_nice_dongle_view= '-DCONFIG_ZMK_KEYBOARD_NAME="Nice_Dongle_V"'
 keyboard_name_puchi_view= '-DCONFIG_ZMK_KEYBOARD_NAME="Puchi_Corne_View"'
