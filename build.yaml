@@ -56,9 +56,9 @@ include:
 
   ### CORNE START ###
     ### nice_view START ###
-    # nice_nano_v2 + nice_view
+    # nice_nano_v2 + nice_view (native 5-pin support, no adapter needed)
   - board: nice_nano_v2
-    shield: corne_left nice_view_adapter nice_view
+    shield: corne_left nice_view
     cmake-args: -DCONFIG_ZMK_KEYBOARD_NAME=\"CorneBT\"
     artifact-name: nice_corne_left_view
     snippet: studio-rpc-usb-uart
@@ -66,9 +66,9 @@ include:
     shield: corne_right
     artifact-name: nice_corne_right_view
 
-    # peripheral_left + nice_nano_v2 + nice_view
+    # peripheral_left + nice_nano_v2 + nice_view (native support)
   - board: nice_nano_v2
-    shield: corne_left_peripheral nice_view_adapter nice_view
+    shield: corne_left_peripheral nice_view
     artifact-name: nice_corne_left_peripheral_view
     ### nice_view END ###
 

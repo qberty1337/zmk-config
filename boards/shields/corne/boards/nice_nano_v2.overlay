@@ -1,3 +1,39 @@
+// Configuration for Corne v3 with native 5-pin nice_view display support
+// This board has the display header built-in, no adapter needed
+
+&pinctrl {
+    spi3_default: spi3_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 6)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 8)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 8)>; // MISO not used but required
+        };
+    };
+
+    spi3_sleep: spi3_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 6)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 8)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 8)>;
+            low-power-enable;
+        };
+    };
+};
+
+nice_view_spi: &spi3 {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+    
+    pinctrl-0 = <&spi3_default>;
+    pinctrl-1 = <&spi3_sleep>;
+    pinctrl-names = "default", "sleep";
+    
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+};
+
+// If you want RGB LEDs instead of nice_view, comment out the above
+// and uncomment the configuration below:
+/*
 #include <dt-bindings/led/led.h>
 
 &pinctrl {
@@ -25,16 +61,11 @@
 
     led_strip: ws2812@0 {
         compatible = "worldsemi,ws2812-spi";
-
-        /* SPI */
-        reg = <0>; /* ignored, but necessary for SPI bindings */
+        reg = <0>;
         spi-max-frequency = <4000000>;
-
-        /* WS2812 */
-        chain-length = <10>; /* arbitrary; change at will */
+        chain-length = <10>;
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
-
         color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
     };
 };
@@ -44,3 +75,4 @@
         zmk,underglow = &led_strip;
     };
 };
+*/
