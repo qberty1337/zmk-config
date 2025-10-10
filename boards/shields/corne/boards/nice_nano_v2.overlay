@@ -2,7 +2,28 @@
 // This board has the display header built-in, no adapter needed
 // FINAL: SCK=P0.20, MOSI=P0.18, CS=P0.06 (standard nice_view pinout)
 
+&pinctrl {
+    spi3_default: spi3_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 18)>;
+        };
+    };
+
+    spi3_sleep: spi3_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 18)>;
+            low-power-enable;
+        };
+    };
+};
+
 nice_view_spi: &spi3 {
+    status = "okay";
+    pinctrl-0 = <&spi3_default>;
+    pinctrl-1 = <&spi3_sleep>;
+    pinctrl-names = "default", "sleep";
     cs-gpios = <&pro_micro 16 GPIO_ACTIVE_HIGH>;
 };
 
