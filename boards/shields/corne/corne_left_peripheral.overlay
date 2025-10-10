@@ -18,3 +18,6 @@
 };
 
 // vim: filetype=dts fdm=marker:
+&nice_view_spi {
+    cs-gpios = <&pro_micro 16 GPIO_ACTIVE_HIGH>;
+};
