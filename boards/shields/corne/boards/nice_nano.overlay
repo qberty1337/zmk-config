@@ -2,7 +2,7 @@
 // This board has the display header built-in, no adapter needed
 // FINAL: SCK=P0.20, MOSI=P0.18, CS=P0.06 (standard nice_view pinout)
 
-&nice_view_spi {
+nice_view_spi: &spi3 {
     cs-gpios = <&pro_micro 16 GPIO_ACTIVE_HIGH>;
 };
 
