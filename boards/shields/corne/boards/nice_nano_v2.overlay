@@ -39,6 +39,12 @@
     };
 };
 
+nice_view_spi: &spi1 {};
+
+&nice_view_spi {
+    cs-gpios = <&pro_micro 16 GPIO_ACTIVE_HIGH>;
+};
+
 / {
     chosen {
         zmk,underglow = &led_strip;
