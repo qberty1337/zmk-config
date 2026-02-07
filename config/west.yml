@@ -17,7 +17,7 @@ manifest:
       import: app/west.yml
     - name: nice-view-gem
       remote: m165437
-      revision: main
+      revision: v0.3.0
     # dongle_display
     - name: zmk-dongle-display
       remote: englmaxi
