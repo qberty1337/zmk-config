@@ -2,37 +2,17 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    # dongle_display
-    - name: englmaxi
-      url-base: https://github.com/englmaxi
-    # nice_oled - nice_epaper - dongle_display!view - oled Adapter
-    - name: mctechnology17
-      url-base: https://github.com/mctechnology17
     - name: m165437
       url-base: https://github.com/M165437
   projects:
+    # ZMK main (Zephyr 4.1) as of 2026-10-09. Bump the sha here and in .github/workflows/build.yml together.
     - name: zmk
       remote: zmkfirmware
-      revision: v0.3.0
+      revision: 4dd95d7840eb3d5a3f59bb29fbf1ab054715ef85
       import: app/west.yml
+    # nice-view-gem main: first commits supporting ZMK main / Zephyr 4.1 (2026-02-27)
     - name: nice-view-gem
       remote: m165437
-      revision: v0.3.0
-    # dongle_display
-    - name: zmk-dongle-display
-      remote: englmaxi
-      revision: v0.3
-    # nice_oled - nice_epaper
-    - name: zmk-nice-oled
-      remote: mctechnology17
-      revision: main
-    # dongle_display!view
-    - name: zmk-dongle-display-view
-      remote: mctechnology17
-      revision: main
-    # oled Adapter
-    - name: zmk-oled-adapter
-      remote: mctechnology17
-      revision: main
+      revision: 0a50fe209d929c916c5664c6affd0f4977c6b012
   self:
     path: config

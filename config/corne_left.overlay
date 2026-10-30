@@ -1,0 +1,13 @@
+/*
+ * Left half only. This PCB's nice!view CS is on D16 (P0.10), not the adapter's D1 (P0.06), which
+ * ZMK's corne overlay already uses for underglow data. SCK/MOSI stay the adapter's D3/D2.
+ * Last known-good display config: commit 915c364.
+ */
+&nice_view_spi {
+    cs-gpios = <&pro_micro 16 GPIO_ACTIVE_HIGH>;
+};
+
+// P0.10 is an nRF52840 NFC pin; make sure it's a GPIO (no-op if the bootloader already set it)
+&uicr {
+    nfct-pins-as-gpios;
+};

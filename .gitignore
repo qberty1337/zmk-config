@@ -84,3 +84,6 @@ __pycache__
 # Rust
 target/
 **/*.rs.bk
+
+# local docker builds (build-local.ps1)
+/build/
