@@ -1,0 +1,5 @@
+#include "tps43_split.dtsi"
+
+&tps43_listener {
+    status = "okay";
+};

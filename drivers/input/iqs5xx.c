@@ -14,9 +14,16 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
+#include <zmk/activity.h>
+
 #include "iqs5xx.h"
 
 LOG_MODULE_REGISTER(iqs5xx, CONFIG_INPUT_LOG_LEVEL);
+
+// Without RDY, reads can land outside the device's comm window and get clock-stretched until
+// the next one, so polling runs on its own queue instead of blocking the system workqueue.
+K_THREAD_STACK_DEFINE(iqs5xx_poll_stack, 1024);
+static struct k_work_q iqs5xx_poll_q;
 
 static int iqs5xx_read_reg16(const struct device *dev, uint16_t reg, uint16_t *val) {
     const struct iqs5xx_config *config = dev->config;
@@ -78,8 +85,9 @@ static void iqs5xx_button_release_work_handler(struct k_work *work) {
     }
 }
 
-static void iqs5xx_work_handler(struct k_work *work) {
-    struct iqs5xx_data *data = CONTAINER_OF(work, struct iqs5xx_data, work);
+static int iqs5xx_setup_device(const struct device *dev);
+
+static void iqs5xx_process(struct iqs5xx_data *data) {
     const struct device *dev = data->dev;
     const struct iqs5xx_config *config = dev->config;
     uint8_t sys_info_0, sys_info_1, gesture_events_0, gesture_events_1, num_fingers;
@@ -87,6 +95,11 @@ static void iqs5xx_work_handler(struct k_work *work) {
 
     // Read system info registers.
     ret = iqs5xx_read_reg8(dev, IQS5XX_SYSTEM_INFO_0, &sys_info_0);
+    if (ret < 0 && !config->rdy_gpio.port) {
+        // Polling: the device NACKs while it's in a low-power mode with nothing to report.
+        // No comm window is open, so there's none to end either.
+        return;
+    }
     if (ret < 0) {
         LOG_ERR("Failed to read system info 0: %d", ret);
         goto end_comm;
@@ -115,6 +128,11 @@ static void iqs5xx_work_handler(struct k_work *work) {
         LOG_INF("Device reset detected");
         // Acknowledge reset.
         iqs5xx_write_reg8(dev, IQS5XX_SYSTEM_CONTROL_0, IQS5XX_ACK_RESET);
+        // A reset drops all our settings (event mode, gestures); reapply them. Ends the window.
+        if (data->initialized) {
+            iqs5xx_setup_device(dev);
+            return;
+        }
         goto end_comm;
     }
 
@@ -224,6 +242,32 @@ static void iqs5xx_work_handler(struct k_work *work) {
 end_comm:
     // End communication window.
     iqs5xx_end_comm_window(dev);
+}
+
+static void iqs5xx_work_handler(struct k_work *work) {
+    iqs5xx_process(CONTAINER_OF(work, struct iqs5xx_data, work));
+}
+
+// No RDY pin: poll fast while ZMK is active, slowly while idle (a touch is still noticed and
+// makes ZMK active again), and stop for sleep, which cuts the trackpad's power anyway.
+static void iqs5xx_poll_handler(struct k_work *work) {
+    struct k_work_delayable *dwork = k_work_delayable_from_work(work);
+    struct iqs5xx_data *data = CONTAINER_OF(dwork, struct iqs5xx_data, poll_work);
+
+    iqs5xx_process(data);
+
+    switch (zmk_activity_get_state()) {
+    case ZMK_ACTIVITY_ACTIVE:
+        k_work_schedule_for_queue(&iqs5xx_poll_q, dwork,
+                                  K_MSEC(CONFIG_INPUT_AZOTEQ_IQS5XX_POLL_INTERVAL_MS));
+        break;
+    case ZMK_ACTIVITY_IDLE:
+        k_work_schedule_for_queue(&iqs5xx_poll_q, dwork,
+                                  K_MSEC(CONFIG_INPUT_AZOTEQ_IQS5XX_IDLE_POLL_INTERVAL_MS));
+        break;
+    case ZMK_ACTIVITY_SLEEP:
+        break;
+    }
 }
 
 static void iqs5xx_rdy_handler(const struct device *port, struct gpio_callback *cb,
@@ -359,43 +403,61 @@ static int iqs5xx_init(const struct device *dev) {
         k_msleep(10);
     }
 
-    // Configure RDY GPIO.
-    if (!gpio_is_ready_dt(&config->rdy_gpio)) {
-        LOG_ERR("RDY GPIO not ready");
-        return -ENODEV;
-    }
+    // Configure RDY GPIO if wired; otherwise poll (see iqs5xx_poll_handler).
+    if (config->rdy_gpio.port) {
+        if (!gpio_is_ready_dt(&config->rdy_gpio)) {
+            LOG_ERR("RDY GPIO not ready");
+            return -ENODEV;
+        }
 
-    ret = gpio_pin_configure_dt(&config->rdy_gpio, GPIO_INPUT);
-    if (ret < 0) {
-        LOG_ERR("Failed to configure RDY GPIO: %d", ret);
-        return ret;
-    }
+        ret = gpio_pin_configure_dt(&config->rdy_gpio, GPIO_INPUT);
+        if (ret < 0) {
+            LOG_ERR("Failed to configure RDY GPIO: %d", ret);
+            return ret;
+        }
 
-    gpio_init_callback(&data->rdy_cb, iqs5xx_rdy_handler, BIT(config->rdy_gpio.pin));
-    ret = gpio_add_callback(config->rdy_gpio.port, &data->rdy_cb);
-    if (ret < 0) {
-        LOG_ERR("Failed to add RDY callback: %d", ret);
-        return ret;
-    }
+        gpio_init_callback(&data->rdy_cb, iqs5xx_rdy_handler, BIT(config->rdy_gpio.pin));
+        ret = gpio_add_callback(config->rdy_gpio.port, &data->rdy_cb);
+        if (ret < 0) {
+            LOG_ERR("Failed to add RDY callback: %d", ret);
+            return ret;
+        }
 
-    ret = gpio_pin_interrupt_configure_dt(&config->rdy_gpio, GPIO_INT_EDGE_RISING);
-    if (ret < 0) {
-        LOG_ERR("Failed to configure RDY interrupt: %d", ret);
-        return ret;
+        ret = gpio_pin_interrupt_configure_dt(&config->rdy_gpio, GPIO_INT_EDGE_RISING);
+        if (ret < 0) {
+            LOG_ERR("Failed to configure RDY interrupt: %d", ret);
+            return ret;
+        }
+    } else {
+        k_work_init_delayable(&data->poll_work, iqs5xx_poll_handler);
+        k_work_queue_init(&iqs5xx_poll_q);
+        k_work_queue_start(&iqs5xx_poll_q, iqs5xx_poll_stack,
+                           K_THREAD_STACK_SIZEOF(iqs5xx_poll_stack), K_LOWEST_APPLICATION_THREAD_PRIO,
+                           NULL);
     }
 
     // Wait for device to be ready.
     k_msleep(100);
 
-    // Setup device configuration.
-    ret = iqs5xx_setup_device(dev);
+    // Setup device configuration. Without RDY the first write can miss the comm window: retry.
+    for (int attempt = 0; attempt < 5; attempt++) {
+        ret = iqs5xx_setup_device(dev);
+        if (ret == 0 || config->rdy_gpio.port) {
+            break;
+        }
+        k_msleep(50);
+    }
     if (ret < 0) {
         LOG_ERR("Failed to setup device: %d", ret);
         return ret;
     }
 
     data->initialized = true;
-    LOG_INF("IQS5xx trackpad initialized");
+    LOG_INF("IQS5xx trackpad initialized (%s)", config->rdy_gpio.port ? "RDY" : "polling");
+
+    if (!config->rdy_gpio.port) {
+        k_work_schedule_for_queue(&iqs5xx_poll_q, &data->poll_work, K_NO_WAIT);
+    }
 
     return 0;
 }
@@ -405,7 +467,7 @@ static int iqs5xx_init(const struct device *dev) {
     static struct iqs5xx_data iqs5xx_data_##n;                                                     \
     static const struct iqs5xx_config iqs5xx_config_##n = {                                        \
         .i2c = I2C_DT_SPEC_INST_GET(n),                                                            \
-        .rdy_gpio = GPIO_DT_SPEC_INST_GET(n, rdy_gpios),                                           \
+        .rdy_gpio = GPIO_DT_SPEC_INST_GET_OR(n, rdy_gpios, {0}),                                   \
         .reset_gpio = GPIO_DT_SPEC_INST_GET_OR(n, reset_gpios, {0}),                               \
         .one_finger_tap = DT_INST_PROP(n, one_finger_tap),                                         \
         .press_and_hold = DT_INST_PROP(n, press_and_hold),                                         \

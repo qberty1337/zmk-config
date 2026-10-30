@@ -1,0 +1,12 @@
+[package]
+name = "corne-battery"
+version = "0.1.0"
+edition = "2021"
+description = "Prints both Corne halves' battery levels, read over USB from the ZMK dongle"
+
+# windows-native: pure-Rust HID backend, so no C compiler is needed on Windows
+[target.'cfg(windows)'.dependencies]
+hidapi = { version = "2", default-features = false, features = ["windows-native"] }
+
+[target.'cfg(not(windows))'.dependencies]
+hidapi = "2"

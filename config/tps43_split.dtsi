@@ -1,0 +1,23 @@
+/*
+ * TPS43 trackpad on the right half (a split peripheral), forwarded to the dongle.
+ * Included by corne_right.overlay and corne_dongle.overlay; node names/reg must match on both.
+ * https://zmk.dev/docs/hardware-integration/pointing (Split Peripheral)
+ */
+/ {
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        tps43_split: tps43_split@0 {
+            compatible = "zmk,input-split";
+            reg = <0>;
+        };
+    };
+
+    // Enabled on the dongle only; add input-processors here (e.g. a scaler) to tune speed.
+    tps43_listener: tps43_listener {
+        compatible = "zmk,input-listener";
+        status = "disabled";
+        device = <&tps43_split>;
+    };
+};

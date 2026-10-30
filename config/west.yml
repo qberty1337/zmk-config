@@ -14,5 +14,6 @@ manifest:
     - name: nice-view-gem
       remote: m165437
       revision: 0a50fe209d929c916c5664c6affd0f4977c6b012
+  # TPS43 trackpad driver: vendored in drivers/input (this repo is a Zephyr module, see zephyr/module.yml)
   self:
     path: config

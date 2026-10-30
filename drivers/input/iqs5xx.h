@@ -142,6 +142,8 @@ struct iqs5xx_data {
     struct gpio_callback rdy_cb;
     struct k_work work;
     struct k_work_delayable button_release_work;
+    // Used instead of `work` when no RDY pin is wired.
+    struct k_work_delayable poll_work;
     // TODO: Pack flags into a bitfield to save space.
     bool initialized;
     // Flag to indicate if the button was pressed in a previous cycle.

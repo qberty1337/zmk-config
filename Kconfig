@@ -1,0 +1,8 @@
+rsource "drivers/input/Kconfig"
+
+config CORNE_BATTERY_HID
+    bool "Expose the split peripherals' battery levels over USB HID (dongle)"
+    depends on ZMK_USB && ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING
+    help
+      Adds a vendor-defined USB HID interface (needs USB_HID_DEVICE_COUNT=2) whose feature
+      report holds each peripheral's battery level. Read by tools/corne-battery.

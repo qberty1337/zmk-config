@@ -1,0 +1,23 @@
+#include "tps43_split.dtsi"
+
+/*
+ * holykeebs touchpad module: Azoteq TPS43 (IQS572) on the pro_micro I2C pins (SDA D2, SCL D3),
+ * powered from the nice!nano's switched VCC (ext-power). The adapter wires no RDY line, so
+ * the driver polls (CONFIG_INPUT_AZOTEQ_IQS5XX_POLL_INTERVAL_MS, default 10 ms).
+ */
+&pro_micro_i2c {
+    status = "okay";
+
+    tps43: iqs5xx@74 {
+        compatible = "azoteq,iqs5xx";
+        reg = <0x74>;
+        one-finger-tap;  // tap = left click
+        two-finger-tap;  // two-finger tap = right click
+        press-and-hold;  // tap-and-hold = drag
+        scroll;          // two-finger scroll
+    };
+};
+
+&tps43_split {
+    device = <&tps43>;
+};

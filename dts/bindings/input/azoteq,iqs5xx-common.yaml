@@ -1,7 +1,7 @@
 properties:
   rdy-gpios:
     type: phandle-array
-    description: "Data Ready pin for the Azoteq IQS5xx trackpad"
+    description: "Data Ready pin for the Azoteq IQS5xx trackpad. Optional: without it the driver polls."
   
   reset-gpios:
     type: phandle-array

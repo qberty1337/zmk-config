@@ -17,4 +17,17 @@ config INPUT_AZOTEQ_IQS5XX_INIT_PRIORITY
       Driver initialization priority for the IQS5xx driver.
       Lower values initialize earlier.
 
+config INPUT_AZOTEQ_IQS5XX_POLL_INTERVAL_MS
+    int "Poll interval while ZMK is active, when rdy-gpios is not wired"
+    default 10
+    help
+      ~ the trackpad's report period while touched. Lower is smoother, higher saves power.
+
+config INPUT_AZOTEQ_IQS5XX_IDLE_POLL_INTERVAL_MS
+    int "Poll interval while ZMK is idle, when rdy-gpios is not wired"
+    default 200
+    help
+      Worst-case delay before a touch is noticed after ZMK_IDLE_TIMEOUT. Set it equal to
+      INPUT_AZOTEQ_IQS5XX_POLL_INTERVAL_MS to never slow down.
+
 endif # INPUT_AZOTEQ_IQS5XX
