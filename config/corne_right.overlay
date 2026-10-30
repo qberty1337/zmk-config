@@ -15,6 +15,11 @@
         two-finger-tap;  // two-finger tap = right click
         press-and-hold;  // tap-and-hold = drag
         scroll;          // two-finger scroll
+        // Module is mounted rotated 90°: finger up moved the cursor right, left moved it down.
+        // Done on-chip, so taps/scroll gestures get the corrected axes too.
+        switch-xy;
+        flip-x;
+        flip-y;
     };
 };
 
